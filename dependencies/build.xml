@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2010 Andreas Veithen
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<project xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+    <target name="install-was7-deps">
+        <artifact:install file="${was7.root}/runtimes/com.ibm.ws.admin.client_7.0.0.jar">
+            <pom file="com.ibm.ws.admin.client.pom"/>
+        </artifact:install>
+    </target>
+    <target name="install-chainsaw-deps">
+        <property name="file" value="chainsaw-bundle.zip"/>
+        <mkdir dir=".tmp"/>
+        <unzip src="${file}" dest=".tmp"/>
+        <artifact:install file=".tmp/log4j-1.3alpha-7.jar">
+            <pom file="log4j.pom"/>
+        </artifact:install>
+        <delete dir=".tmp"/>
+    </target>
+</project>
