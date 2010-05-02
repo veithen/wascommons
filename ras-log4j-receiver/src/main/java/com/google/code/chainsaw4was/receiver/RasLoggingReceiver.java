@@ -100,7 +100,6 @@ public class RasLoggingReceiver extends Receiver implements NotificationListener
             ObjectName queryMBean = new ObjectName("WebSphere:type=RasLoggingService,*");
             for (Iterator it = adminClient.queryNames(queryMBean, null).iterator(); it.hasNext(); ) {
                 ObjectName rasMBean = (ObjectName)it.next(); 
-                String serverId = rasMBean.getKeyProperty("node") + "/" + rasMBean.getKeyProperty("process");
                 /*
                 NotificationFilterSupport filter = new NotificationFilterSupport();
                 filter.enableType(NotificationConstants.TYPE_RAS_FATAL);
@@ -109,7 +108,7 @@ public class RasLoggingReceiver extends Receiver implements NotificationListener
                 filter.enableType(NotificationConstants.TYPE_RAS_INFO);
                 filter.enableType(NotificationConstants.TYPE_RAS_AUDIT);
                 filter.enableType(NotificationConstants.TYPE_RAS_SERVICE);*/
-                adminClient.addNotificationListener(rasMBean, this, null, serverId);
+                adminClient.addNotificationListener(rasMBean, this, null, rasMBean);
                 rasMBeans.add(rasMBean);
             }
         } catch (Throwable ex) {
@@ -125,6 +124,19 @@ public class RasLoggingReceiver extends Receiver implements NotificationListener
                 message.getLocalizedMessage(Locale.ENGLISH), null);
         event.setTimeStamp(message.getTimeStamp());
         event.setThreadName(message.getThreadId());
+        ObjectName rasMBean = (ObjectName)handback;
+        String cell = rasMBean.getKeyProperty("cell");
+        String node = rasMBean.getKeyProperty("node");
+        String process = rasMBean.getKeyProperty("process");
+        // Predefined properties
+        event.setProperty("hostname", cell + "/" + node);
+        event.setProperty("application", process);
+        event.setProperty("log4jid", Long.toString(notification.getSequenceNumber()));
+        // Custom properties
+        event.setProperty("cell", cell);
+        event.setProperty("node", node);
+        event.setProperty("process", process);
+        event.setProperty("version", rasMBean.getKeyProperty("version"));
         doPost(event);
     }
 
