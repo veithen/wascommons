@@ -54,12 +54,27 @@ public class RasLoggingReceiver extends Receiver implements NotificationListener
     private AdminClient adminClient;
     private final List<ObjectName> rasMBeans = new ArrayList<ObjectName>();
     
+    @Override
+    public String getName() {
+        String name = super.getName();
+        if (name != null && name.length() > 0) {
+            return name;
+        } else {
+            return "WAS @ " + host + ":" + port;
+        }
+    }
+
     public String getHost() {
         return host;
     }
 
     public void setHost(String host) {
+        String oldName = getName();
         this.host = host;
+        String newName = getName();
+        if (!oldName.equals(newName)) {
+            firePropertyChange("name", oldName, newName);
+        }
     }
 
     public int getPort() {
@@ -67,7 +82,12 @@ public class RasLoggingReceiver extends Receiver implements NotificationListener
     }
 
     public void setPort(int port) {
+        String oldName = getName();
         this.port = port;
+        String newName = getName();
+        if (!oldName.equals(newName)) {
+            firePropertyChange("name", oldName, newName);
+        }
     }
 
     public void activateOptions() {
