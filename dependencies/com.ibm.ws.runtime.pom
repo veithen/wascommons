@@ -22,4 +22,16 @@
     <artifactId>com.ibm.ws.runtime</artifactId>
     <version>7.0.0</version>
     <packaging>jar</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>com.ibm</groupId>
+            <artifactId>com.ibm.ws.emf</artifactId>
+            <version>7.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.ibm</groupId>
+            <artifactId>com.ibm.ws.admin.services</artifactId>
+            <version>7.0.0</version>
+        </dependency>
+    </dependencies>
 </project>
