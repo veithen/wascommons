@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2010 Andreas Veithen
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.google.code.chainsaw4was</groupId>
+    <artifactId>chainsaw4was</artifactId>
+    <version>0.1-SNAPSHOT</version>
+    <name>Chainsaw for WAS</name>
+    <packaging>pom</packaging>
+    
+    <url>http://code.google.com/p/chainsaw4was/</url>
+    <inceptionYear>2010</inceptionYear>
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <name>Andreas Veithen</name>
+            <id>andreas.veithen</id>
+            <email>andreas.veithen (at) gmail.com</email>
+            <roles>
+                <role>Despot</role>
+            </roles>
+        </developer>
+    </developers>
+    
+    <issueManagement>
+        <system>Google Code</system>
+        <url>http://code.google.com/p/chainsaw4was/issues/</url>
+    </issueManagement>
+    <scm>
+        <url>http://code.google.com/p/chainsaw4was/source/browse/#svn/trunk/</url>
+        <connection>scm:svn:http://chainsaw4was.googlecode.com/svn/trunk</connection>
+        <developerConnection>scm:svn:https://chainsaw4was.googlecode.com/svn/trunk</developerConnection>
+    </scm>
+    
+    <modules>
+        <module>ras-log4j-receiver</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.4</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
