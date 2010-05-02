@@ -16,8 +16,17 @@
   -->
 <project xmlns:artifact="antlib:org.apache.maven.artifact.ant">
     <target name="install-was7-deps">
-        <artifact:install file="${was7.root}/runtimes/com.ibm.ws.admin.client_7.0.0.jar">
-            <pom file="com.ibm.ws.admin.client.pom"/>
+        <artifact:install file="${was7.root}/plugins/com.ibm.ws.admin.core.jar">
+            <pom file="com.ibm.ws.admin.core.pom"/>
+        </artifact:install>
+        <artifact:install file="${was7.root}/plugins/com.ibm.ws.runtime.jar">
+            <pom file="com.ibm.ws.runtime.pom"/>
+        </artifact:install>
+        <artifact:install file="${was7.root}/plugins/com.ibm.ws.webcontainer.jar">
+            <pom file="com.ibm.ws.webcontainer.pom"/>
+        </artifact:install>
+        <artifact:install file="${was7.root}/runtimes/com.ibm.ws.orb_7.0.0.jar">
+            <pom file="com.ibm.ws.orb.pom"/>
         </artifact:install>
     </target>
     <target name="install-chainsaw-deps">
