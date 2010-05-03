@@ -137,6 +137,7 @@ public class RasLoggingReceiver extends Receiver implements NotificationListener
         event.setProperty("node", node);
         event.setProperty("process", process);
         event.setProperty("version", rasMBean.getKeyProperty("version"));
+        event.setProperty("severity", message.getMessageSeverity());
         doPost(event);
     }
 
