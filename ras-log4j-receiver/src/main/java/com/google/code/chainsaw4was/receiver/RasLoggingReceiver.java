@@ -29,6 +29,7 @@ import javax.management.ObjectName;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.apache.log4j.ULogger;
 import org.apache.log4j.plugins.Receiver;
 import org.apache.log4j.spi.LoggingEvent;
 
@@ -53,6 +54,7 @@ public class RasLoggingReceiver extends Receiver implements NotificationListener
     private int port = 9100;
     private AdminClient adminClient;
     private final List<ObjectName> rasMBeans = new ArrayList<ObjectName>();
+    private int instanceCount;
     
     @Override
     public String getName() {
@@ -89,8 +91,19 @@ public class RasLoggingReceiver extends Receiver implements NotificationListener
             firePropertyChange("name", oldName, newName);
         }
     }
+    
+    public int getInstanceCount() {
+        return instanceCount;
+    }
+    
+    private void updateInstanceCount(int delta) {
+        int oldInstanceCount = instanceCount;
+        instanceCount++;
+        firePropertyChange("instanceCount", oldInstanceCount, instanceCount);
+    }
 
     public void activateOptions() {
+        ULogger log = getLogger();
         try {
             Properties clientProps = new Properties();
             clientProps.setProperty(AdminClient.CONNECTOR_TYPE, AdminClient.CONNECTOR_TYPE_RMI);
@@ -109,10 +122,12 @@ public class RasLoggingReceiver extends Receiver implements NotificationListener
                 filter.enableType(NotificationConstants.TYPE_RAS_AUDIT);
                 filter.enableType(NotificationConstants.TYPE_RAS_SERVICE);*/
                 adminClient.addNotificationListener(rasMBean, this, null, rasMBean);
+                updateInstanceCount(1);
+                log.info("Started listening to " + rasMBean);
                 rasMBeans.add(rasMBean);
             }
         } catch (Throwable ex) {
-            getLogger().error("Couldn't start " + RasLoggingReceiver.class.getName(), ex);
+            log.error("Couldn't start " + RasLoggingReceiver.class.getName(), ex);
         }
     }
     
@@ -142,11 +157,14 @@ public class RasLoggingReceiver extends Receiver implements NotificationListener
     }
 
     public void shutdown() {
+        ULogger log = getLogger();
         for (ObjectName rasMBean : rasMBeans) {
             try {
                 adminClient.removeNotificationListener(rasMBean, this);
+                updateInstanceCount(-1);
+                log.info("Stopped listening to " + rasMBean);
             } catch (Throwable ex) {
-                getLogger().error("Couldn't remove notification listener for " + rasMBean, ex);
+                log.error("Couldn't remove notification listener for " + rasMBean, ex);
             }
         }
     }
