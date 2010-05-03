@@ -31,6 +31,9 @@
         <artifact:install file="${was7.root}/plugins/com.ibm.ws.webcontainer.jar">
             <pom file="com.ibm.ws.webcontainer.pom"/>
         </artifact:install>
+        <artifact:install file="${was7.root}/plugins/com.ibm.ws.sib.utils.jar">
+            <pom file="com.ibm.ws.sib.utils.pom"/>
+        </artifact:install>
         <artifact:install file="${was7.root}/plugins/com.ibm.ffdc.jar">
             <pom file="com.ibm.ffdc.pom"/>
         </artifact:install>

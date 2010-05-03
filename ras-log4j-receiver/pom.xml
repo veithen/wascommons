@@ -48,10 +48,16 @@
             <artifactId>com.ibm.ws.orb</artifactId>
             <version>7.0.0</version>
         </dependency>
-        <!-- This dependency is necessary to get messages from the Web container -->
+        
+        <!-- These dependencies are necessary to get messages from various subcomponents of the server -->
         <dependency>
             <groupId>com.ibm</groupId>
             <artifactId>com.ibm.ws.webcontainer</artifactId>
+            <version>7.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.ibm</groupId>
+            <artifactId>com.ibm.ws.sib.utils</artifactId>
             <version>7.0.0</version>
         </dependency>
     </dependencies>
