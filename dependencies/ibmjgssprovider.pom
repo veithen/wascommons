@@ -19,29 +19,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.ibm</groupId>
-    <artifactId>com.ibm.ws.admin.core</artifactId>
+    <artifactId>ibmjgssprovider</artifactId>
     <version>7.0.0</version>
     <packaging>jar</packaging>
-    <dependencies>
-        <dependency>
-            <groupId>com.ibm</groupId>
-            <artifactId>bootstrap</artifactId>
-            <version>7.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.ibm</groupId>
-            <artifactId>ibmjgssprovider</artifactId>
-            <version>7.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.ibm</groupId>
-            <artifactId>com.ibm.ws.runtime</artifactId>
-            <version>7.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.ibm</groupId>
-            <artifactId>com.ibm.ffdc</artifactId>
-            <version>7.0.0</version>
-        </dependency>
-    </dependencies>
 </project>

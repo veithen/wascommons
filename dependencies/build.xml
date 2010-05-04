@@ -43,6 +43,9 @@
         <artifact:install file="${was7.root}/lib/bootstrap.jar">
             <pom file="bootstrap.pom"/>
         </artifact:install>
+        <artifact:install file="${was7.root}/java/jre/lib/ibmjgssprovider.jar">
+            <pom file="ibmjgssprovider.pom"/>
+        </artifact:install>
     </target>
     <target name="install-chainsaw-deps">
         <property name="file" value="chainsaw-bundle.zip"/>
