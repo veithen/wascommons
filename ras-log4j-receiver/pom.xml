@@ -50,7 +50,8 @@
         </dependency>
         
         <!-- These dependencies are necessary to get messages from various subcomponents of the server -->
-        <dependency>
+        <!-- TODO: Should no longer be necessary; if confirmed, remove the dependencies and the POMs/ant tasks -->
+        <!-- dependency>
             <groupId>com.ibm</groupId>
             <artifactId>com.ibm.ws.webcontainer</artifactId>
             <version>7.0.0</version>
@@ -59,6 +60,6 @@
             <groupId>com.ibm</groupId>
             <artifactId>com.ibm.ws.sib.utils</artifactId>
             <version>7.0.0</version>
-        </dependency>
+        </dependency -->
     </dependencies>
 </project>

@@ -15,11 +15,11 @@
  */
 package com.google.code.chainsaw4was.receiver;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
@@ -33,13 +33,14 @@ import org.apache.log4j.ULogger;
 import org.apache.log4j.plugins.Receiver;
 import org.apache.log4j.spi.LoggingEvent;
 
+import com.ibm.ejs.ras.RasMessageImpl2;
 import com.ibm.websphere.management.AdminClient;
 import com.ibm.websphere.management.AdminClientFactory;
 import com.ibm.websphere.management.NotificationConstants;
-import com.ibm.websphere.ras.RasMessage;
 
 public class RasLoggingReceiver extends Receiver implements NotificationListener {
     private static final Map<String,Level> rasTypeToLevelMap = new HashMap<String,Level>();
+    private static final Field localizedMessageField;
     
     static {
         rasTypeToLevelMap.put(NotificationConstants.TYPE_RAS_INFO, Level.INFO);
@@ -48,6 +49,12 @@ public class RasLoggingReceiver extends Receiver implements NotificationListener
         rasTypeToLevelMap.put(NotificationConstants.TYPE_RAS_WARNING, Level.WARN);
         rasTypeToLevelMap.put(NotificationConstants.TYPE_RAS_ERROR, Level.ERROR);
         rasTypeToLevelMap.put(NotificationConstants.TYPE_RAS_FATAL, Level.FATAL);
+        try {
+            localizedMessageField = RasMessageImpl2.class.getDeclaredField("ivLocalizedMessage");
+        } catch (NoSuchFieldException ex) {
+            throw new NoSuchFieldError(ex.getMessage());
+        }
+        localizedMessageField.setAccessible(true);
     }
     
     private String host = "localhost";
@@ -132,11 +139,21 @@ public class RasLoggingReceiver extends Receiver implements NotificationListener
     }
     
     public void handleNotification(Notification notification, Object handback) {
-        RasMessage message = (RasMessage)notification.getUserData();
+        RasMessageImpl2 message = (RasMessageImpl2)notification.getUserData();
+        // We extract the localized message using reflection because
+        // getLocalizedMessage will always compare the locale. If there is a
+        // locale mismatch and the necessary resource bundle is not found,
+        // no message will be returned.
+        String localizedMessage;
+        try {
+            localizedMessage = (String)localizedMessageField.get(message);
+        } catch (IllegalAccessException ex) {
+            throw new IllegalAccessError(ex.getMessage());
+        }
         Logger logger = getLoggerRepository().getLogger(message.getMessageOriginator());
         LoggingEvent event = new LoggingEvent(logger.getName(), logger,
                 rasTypeToLevelMap.get(notification.getType()),
-                message.getLocalizedMessage(Locale.ENGLISH), null);
+                localizedMessage, null);
         event.setTimeStamp(message.getTimeStamp());
         event.setThreadName(message.getThreadId());
         ObjectName rasMBean = (ObjectName)handback;
