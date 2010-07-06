@@ -105,7 +105,7 @@ public class RasLoggingReceiver extends Receiver implements NotificationListener
     
     private void updateInstanceCount(int delta) {
         int oldInstanceCount = instanceCount;
-        instanceCount++;
+        instanceCount += delta;
         firePropertyChange("instanceCount", oldInstanceCount, instanceCount);
     }
 
