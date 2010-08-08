@@ -1,0 +1,42 @@
+Building Chainsaw4WAS from source
+
+* Prerequisites
+
+  Before being able to build Chainsaw4WAS from source, your system
+  must fulfill the following prerequisites:
+  
+  * Chainsaw4WAS depends on several libraries from the WebSphere runtime.
+    Since these libraries cannot be redistributed, WAS 7 must be installed
+    locally on the system. A developer version of WAS 7 can be downloaded from
+    {{{http://www.ibm.com/developerworks/downloads/ws/wasdevelopers/index.html}here}}.
+    
+  * {{{http://maven.apache.org/}Maven 2}} must be installed.
+  
+* Getting the source code
+
+  To build Chainsaw4WAS, start by checking out the sources from Subversion
+  as described {{{source-repository.html}here}}.
+
+* Installing the WebSphere dependencies into the local Maven repository
+
+  Before the sources can be compiled, it is necessary to install several
+  dependencies from the WebSphere runtime into the local Maven repository.
+  To do this, change into the <<<dependencies>>> directory and execute
+  the following command:
+  
++---------------------------------------------------+
+mvn install -Dwas7.root=<WAS7 installation directory>
++---------------------------------------------------+
+
+  Hint: When using the developer version of WAS7, the value for <<<was7.root>>>
+  typically ends with <<<WebSphere/AppServer>>>. When using the WAS7 test server
+  shipped with RAD, specify the path to the <<<runtimes/base_v7>>> directory.
+
+* Building Chainsaw4WAS
+
+  To build Chainsaw4WAS, go back to the root directory of the source tree and
+  execute the following command:
+
++---------------+
+mvn clean install
++---------------+
