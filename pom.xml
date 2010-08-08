@@ -72,6 +72,17 @@
         </dependencies>
     </dependencyManagement>
     
+    <repositories>
+        <repository>
+            <id>chainsaw4was</id>
+            <name>chainsaw4was repository</name>
+            <url>https://chainsaw4was.googlecode.com/svn/repo</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+    
     <build>
         <plugins>
             <plugin>
