@@ -117,6 +117,17 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>install-com.ibm.ws.bootstrap</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <file>${was7.root}/plugins/com.ibm.ws.bootstrap.jar</file>
+                            <pomFile>com.ibm.ws.bootstrap.pom</pomFile>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>install-com.ibm.ws.orb</id>
                         <phase>install</phase>
                         <goals>

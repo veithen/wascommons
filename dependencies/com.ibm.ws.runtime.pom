@@ -53,5 +53,10 @@
             <artifactId>com.ibm.ffdc</artifactId>
             <version>7.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.ibm</groupId>
+            <artifactId>com.ibm.ws.bootstrap</artifactId>
+            <version>7.0.0</version>
+        </dependency>
     </dependencies>
 </project>

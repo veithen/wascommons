@@ -15,7 +15,6 @@
  */
 package com.googlecode.chainsaw4was.receiver;
 
-import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,7 +37,6 @@ import com.ibm.ejs.ras.RasMessageImpl2;
 import com.ibm.websphere.management.AdminClient;
 import com.ibm.websphere.management.AdminClientFactory;
 import com.ibm.websphere.management.NotificationConstants;
-import com.ibm.ws.orb.GlobalORBFactory;
 
 public class RasLoggingReceiver extends Receiver implements NotificationListener {
     private static final Map<String,Level> rasTypeToLevelMap = new HashMap<String,Level>();
@@ -114,13 +112,7 @@ public class RasLoggingReceiver extends Receiver implements NotificationListener
     public void activateOptions() {
         ULogger log = getLogger();
         try {
-            if (GlobalORBFactory.globalORB() == null) {
-                Properties orbProps = new Properties();
-                orbProps.setProperty("org.omg.CORBA.ORBClass", "com.ibm.CORBA.iiop.ORB");
-                // This prevents the ORB from creating orbtrc files
-                orbProps.setProperty("com.ibm.CORBA.Debug.Output", File.separatorChar == '/' ? "/dev/null" : "NUL");
-                GlobalORBFactory.init(new String[0], orbProps);
-            }
+            ORBUtil.initGlobalORB();
             Properties clientProps = new Properties();
             clientProps.setProperty(AdminClient.CONNECTOR_TYPE, AdminClient.CONNECTOR_TYPE_RMI);
             clientProps.setProperty(AdminClient.CONNECTOR_HOST, host);
