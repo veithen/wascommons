@@ -15,6 +15,7 @@
  */
 package com.google.code.chainsaw4was.receiver;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -116,6 +117,8 @@ public class RasLoggingReceiver extends Receiver implements NotificationListener
             if (GlobalORBFactory.globalORB() == null) {
                 Properties orbProps = new Properties();
                 orbProps.setProperty("org.omg.CORBA.ORBClass", "com.ibm.CORBA.iiop.ORB");
+                // This prevents the ORB from creating orbtrc files
+                orbProps.setProperty("com.ibm.CORBA.Debug.Output", File.separatorChar == '/' ? "/dev/null" : "NUL");
                 GlobalORBFactory.init(new String[0], orbProps);
             }
             Properties clientProps = new Properties();
