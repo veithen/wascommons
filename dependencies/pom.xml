@@ -106,6 +106,17 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>install-com.ibm.wsfp.main</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <file>${was7.root}/plugins/com.ibm.wsfp.main.jar</file>
+                            <pomFile>com.ibm.wsfp.main.pom</pomFile>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>install-com.ibm.ws.orb</id>
                         <phase>install</phase>
                         <goals>
