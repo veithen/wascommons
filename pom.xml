@@ -76,7 +76,7 @@
         <repository>
             <id>chainsaw4was</id>
             <name>chainsaw4was repository</name>
-            <url>https://chainsaw4was.googlecode.com/svn/repo</url>
+            <url>http://chainsaw4was.googlecode.com/svn/repo</url>
             <releases>
                 <enabled>true</enabled>
                 <checksumPolicy>fail</checksumPolicy>
