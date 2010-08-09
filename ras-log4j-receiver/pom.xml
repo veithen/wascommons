@@ -28,11 +28,6 @@
     <name>Chainsaw for WAS :: log4j receiver</name>
     <packaging>jar</packaging>
     <dependencies>
-        <!-- dependency>
-            <groupId>log4j</groupId>
-            <artifactId>apache-log4j-receivers</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency -->
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
@@ -48,18 +43,5 @@
             <artifactId>com.ibm.ws.orb</artifactId>
             <version>7.0.0</version>
         </dependency>
-        
-        <!-- These dependencies are necessary to get messages from various subcomponents of the server -->
-        <!-- TODO: Should no longer be necessary; if confirmed, remove the dependencies and the POMs/ant tasks -->
-        <!-- dependency>
-            <groupId>com.ibm</groupId>
-            <artifactId>com.ibm.ws.webcontainer</artifactId>
-            <version>7.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.ibm</groupId>
-            <artifactId>com.ibm.ws.sib.utils</artifactId>
-            <version>7.0.0</version>
-        </dependency -->
     </dependencies>
 </project>
