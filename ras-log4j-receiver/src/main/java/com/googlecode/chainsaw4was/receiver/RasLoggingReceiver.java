@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.code.chainsaw4was.receiver;
+package com.googlecode.chainsaw4was.receiver;
 
 import java.io.File;
 import java.lang.reflect.Field;
