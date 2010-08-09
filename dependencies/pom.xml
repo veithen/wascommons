@@ -123,7 +123,7 @@
                             <goal>install-file</goal>
                         </goals>
                         <configuration>
-                            <file>${was7.root}/runtimes/com.ibm.ws.orb_7.0.0.jar</file>
+                            <file>${was7.root}/lib/bootstrap.jar</file>
                             <pomFile>bootstrap.pom</pomFile>
                         </configuration>
                     </execution>
