@@ -38,5 +38,20 @@
             <artifactId>com.ibm.wsfp.main</artifactId>
             <version>7.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.ibm</groupId>
+            <artifactId>com.ibm.ws.orb</artifactId>
+            <version>7.0.0</version>
+        </dependency>
+        <dependency>
+		    <groupId>com.ibm</groupId>
+		    <artifactId>bootstrap</artifactId>
+		    <version>7.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.ibm</groupId>
+            <artifactId>com.ibm.ffdc</artifactId>
+            <version>7.0.0</version>
+        </dependency>
     </dependencies>
 </project>

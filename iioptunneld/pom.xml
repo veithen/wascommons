@@ -24,8 +24,8 @@
         <version>0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <artifactId>ras-log4j-receiver</artifactId>
-    <name>Chainsaw for WAS :: log4j receiver</name>
+    <artifactId>iioptunneld</artifactId>
+    <name>Chainsaw for WAS :: iioptunneld</name>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
@@ -35,8 +35,13 @@
         </dependency>
         <dependency>
             <groupId>com.ibm</groupId>
-            <artifactId>com.ibm.ws.admin.core</artifactId>
+            <artifactId>com.ibm.ws.runtime</artifactId>
             <version>7.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mortbay.jetty</groupId>
+            <artifactId>jetty</artifactId>
+            <version>6.1.25</version>
         </dependency>
     </dependencies>
 </project>
