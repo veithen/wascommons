@@ -11,4 +11,4 @@ goto runChainsaw
 set JAVACMD=java.exe
 
 :runChainsaw
-"%JAVACMD%" -cp "%CHAINSAW_CLASSPATH%" org.apache.log4j.chainsaw.LogUI
+"%JAVACMD%" -Dorg.omg.CORBA.ORBClass=com.ibm.CORBA.iiop.ORB -cp "%CHAINSAW_CLASSPATH%" org.apache.log4j.chainsaw.LogUI
