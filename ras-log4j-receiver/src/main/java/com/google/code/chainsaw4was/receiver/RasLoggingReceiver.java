@@ -37,6 +37,7 @@ import com.ibm.ejs.ras.RasMessageImpl2;
 import com.ibm.websphere.management.AdminClient;
 import com.ibm.websphere.management.AdminClientFactory;
 import com.ibm.websphere.management.NotificationConstants;
+import com.ibm.ws.orb.GlobalORBFactory;
 
 public class RasLoggingReceiver extends Receiver implements NotificationListener {
     private static final Map<String,Level> rasTypeToLevelMap = new HashMap<String,Level>();
@@ -112,6 +113,11 @@ public class RasLoggingReceiver extends Receiver implements NotificationListener
     public void activateOptions() {
         ULogger log = getLogger();
         try {
+            if (GlobalORBFactory.globalORB() == null) {
+                Properties orbProps = new Properties();
+                orbProps.setProperty("org.omg.CORBA.ORBClass", "com.ibm.CORBA.iiop.ORB");
+                GlobalORBFactory.init(new String[0], orbProps);
+            }
             Properties clientProps = new Properties();
             clientProps.setProperty(AdminClient.CONNECTOR_TYPE, AdminClient.CONNECTOR_TYPE_RMI);
             clientProps.setProperty(AdminClient.CONNECTOR_HOST, host);
