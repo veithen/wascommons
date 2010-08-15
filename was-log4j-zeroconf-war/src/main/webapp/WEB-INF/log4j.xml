@@ -17,7 +17,7 @@
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
     <plugin name="ras" class="com.googlecode.chainsaw4was.receiver.LocalRasLoggingReceiver"/>
     <appender name="zeroconf" class="org.apache.log4j.net.ZeroConfSocketHubAppender">
-        <param name="Name" value="RASZeroConfSocketHubAppender" />
+        <param name="Name" value="WebSphere:${server.cell}/${server.node}-${server.name}"/>
     </appender>
     <root>
         <level value="INFO"/>

@@ -28,7 +28,7 @@ public class InitServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        JoranConfigurator configurator = new JoranConfigurator();
+        JoranConfigurator configurator = new Configurator();
         try {
             configurator.doConfigure(getServletContext().getResource("/WEB-INF/log4j.xml"), LogManager.getLoggerRepository());
         } catch (MalformedURLException ex) {
