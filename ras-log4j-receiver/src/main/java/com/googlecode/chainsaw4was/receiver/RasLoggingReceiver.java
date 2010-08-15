@@ -18,10 +18,8 @@ package com.googlecode.chainsaw4was.receiver;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.management.Notification;
 import javax.management.NotificationListener;
@@ -34,11 +32,9 @@ import org.apache.log4j.plugins.Receiver;
 import org.apache.log4j.spi.LoggingEvent;
 
 import com.ibm.ejs.ras.RasMessageImpl2;
-import com.ibm.websphere.management.AdminClient;
-import com.ibm.websphere.management.AdminClientFactory;
 import com.ibm.websphere.management.NotificationConstants;
 
-public class RasLoggingReceiver extends Receiver implements NotificationListener {
+public abstract class RasLoggingReceiver extends Receiver implements NotificationListener {
     private static final Map<String,Level> rasTypeToLevelMap = new HashMap<String,Level>();
     private static final Field localizedMessageField;
     
@@ -57,47 +53,9 @@ public class RasLoggingReceiver extends Receiver implements NotificationListener
         localizedMessageField.setAccessible(true);
     }
     
-    private String host = "localhost";
-    private int port = 9100;
-    private AdminClient adminClient;
+    private Admin admin;
     private final List<ObjectName> rasMBeans = new ArrayList<ObjectName>();
     private int instanceCount;
-    
-    @Override
-    public String getName() {
-        String name = super.getName();
-        if (name != null && name.length() > 0) {
-            return name;
-        } else {
-            return "WAS @ " + host + ":" + port;
-        }
-    }
-
-    public String getHost() {
-        return host;
-    }
-
-    public void setHost(String host) {
-        String oldName = getName();
-        this.host = host;
-        String newName = getName();
-        if (!oldName.equals(newName)) {
-            firePropertyChange("name", oldName, newName);
-        }
-    }
-
-    public int getPort() {
-        return port;
-    }
-
-    public void setPort(int port) {
-        String oldName = getName();
-        this.port = port;
-        String newName = getName();
-        if (!oldName.equals(newName)) {
-            firePropertyChange("name", oldName, newName);
-        }
-    }
     
     public int getInstanceCount() {
         return instanceCount;
@@ -109,18 +67,14 @@ public class RasLoggingReceiver extends Receiver implements NotificationListener
         firePropertyChange("instanceCount", oldInstanceCount, instanceCount);
     }
 
+    protected abstract Admin createAdmin() throws Exception;
+    
     public void activateOptions() {
         ULogger log = getLogger();
         try {
-            ORBUtil.initGlobalORB();
-            Properties clientProps = new Properties();
-            clientProps.setProperty(AdminClient.CONNECTOR_TYPE, AdminClient.CONNECTOR_TYPE_RMI);
-            clientProps.setProperty(AdminClient.CONNECTOR_HOST, host);
-            clientProps.setProperty(AdminClient.CONNECTOR_PORT, String.valueOf(port));
-            adminClient = AdminClientFactory.createAdminClient(clientProps);
+            admin = createAdmin();
             ObjectName queryMBean = new ObjectName("WebSphere:type=RasLoggingService,*");
-            for (Iterator it = adminClient.queryNames(queryMBean, null).iterator(); it.hasNext(); ) {
-                ObjectName rasMBean = (ObjectName)it.next(); 
+            for (ObjectName rasMBean : admin.queryNames(queryMBean, null)) {
                 /*
                 NotificationFilterSupport filter = new NotificationFilterSupport();
                 filter.enableType(NotificationConstants.TYPE_RAS_FATAL);
@@ -129,7 +83,7 @@ public class RasLoggingReceiver extends Receiver implements NotificationListener
                 filter.enableType(NotificationConstants.TYPE_RAS_INFO);
                 filter.enableType(NotificationConstants.TYPE_RAS_AUDIT);
                 filter.enableType(NotificationConstants.TYPE_RAS_SERVICE);*/
-                adminClient.addNotificationListener(rasMBean, this, null, rasMBean);
+                admin.addNotificationListener(rasMBean, this, null, rasMBean);
                 updateInstanceCount(1);
                 log.info("Started listening to " + rasMBean);
                 rasMBeans.add(rasMBean);
@@ -178,7 +132,7 @@ public class RasLoggingReceiver extends Receiver implements NotificationListener
         ULogger log = getLogger();
         for (ObjectName rasMBean : rasMBeans) {
             try {
-                adminClient.removeNotificationListener(rasMBean, this);
+                admin.removeNotificationListener(rasMBean, this);
                 updateInstanceCount(-1);
                 log.info("Stopped listening to " + rasMBean);
             } catch (Throwable ex) {

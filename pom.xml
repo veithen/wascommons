@@ -56,6 +56,8 @@
     
     <modules>
         <module>ras-log4j-receiver</module>
+        <module>was-log4j-zeroconf</module>
+        <module>was-log4j-zeroconf-war</module>
     </modules>
 
     <properties>
@@ -64,6 +66,21 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>1.3alpha-7</version>
+            </dependency>
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j-optional</artifactId>
+                <version>1.3alpha-7</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ibm</groupId>
+                <artifactId>com.ibm.ws.admin.core</artifactId>
+                <version>7.0.0</version>
+            </dependency>
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>

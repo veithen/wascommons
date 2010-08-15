@@ -24,17 +24,15 @@
         <version>0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <artifactId>ras-log4j-receiver</artifactId>
-    <name>Chainsaw for WAS :: log4j receiver</name>
-    <packaging>jar</packaging>
+    <artifactId>was-log4j-zeroconf</artifactId>
+    <name>Chainsaw for WAS :: Zeroconf EAR</name>
+    <packaging>ear</packaging>
     <dependencies>
         <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.ibm</groupId>
-            <artifactId>com.ibm.ws.admin.core</artifactId>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>was-log4j-zeroconf-war</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
         </dependency>
     </dependencies>
 </project>
