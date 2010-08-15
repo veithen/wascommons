@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN" "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<!--
+  ~ Copyright 2010 Andreas Veithen
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<book>
+    <bookinfo>
+        <title>Chainsaw for WAS Manual</title>
+        <releaseinfo>&version;</releaseinfo>
+        <legalnotice>
+            <para>
+                Copyright 2010 Andreas Veithen
+            </para>
+            <para>
+                Licensed under the Apache License, Version 2.0 (the "License");
+                you may not use this file except in compliance with the License.
+                You may obtain a copy of the License at
+            </para>
+            <para>
+                <ulink url="http://www.apache.org/licenses/LICENSE-2.0"/>
+            </para>
+            <para>
+                Unless required by applicable law or agreed to in writing, software
+                distributed under the License is distributed on an "AS IS" BASIS,
+                WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+                See the License for the specific language governing permissions and
+                limitations under the License.
+            </para>
+        </legalnotice>
+    </bookinfo>
+    <chapter>
+        <title>Getting started</title>
+        <section>
+            <title>Introduction</title>
+            <para>
+                The aim of the Chainsaw4WAS is to integrate Apache Chainsaw with
+                WebSphere Application Server.
+                <ulink url="http://logging.apache.org/chainsaw/">Apache Chainsaw</ulink>
+                is a GUI-based log viewer based on the popular log4j framework. It ships
+                with a number of plugins that can be used to receive log events from
+                remote processes. However, for this to work, these processes must use
+                log4j and must be configured with the corresponding log4j appenders.
+            </para>
+            <para>
+                On the other hand, WebSphere has a centralized logging subsystem that
+                is exposed at the JMX level as an MBean called
+                <classname>RasLoggingService</classname>. It processes log events
+                from other WebSphere components as well as from the deployed applications,
+                provided that these applications use one of the Jakarta Commons Logging (JCL) or
+                java.util.logging (JUL) APIs. This is also the component that
+                manages the well known <filename>SystemOut.log</filename> file.
+                <classname>RasLoggingService</classname> supports JMX notifications, so that
+                it is possible to connect to a remote WAS instance and receive log events
+                from this server in realtime. The aim of the Chainsaw4WAS project is to
+                allow these log events to be visualized in Apache Chainsaw.
+            </para>
+            <para>
+                The heard of the Chainsaw4WAS project is a custom log4j plugin
+                (more precisely an implementation of the <classname>org.apache.log4j.plugins.Receiver</classname>
+                interface) that connects to a local or remote <classname>RasLoggingService</classname> and
+                that injects the received log events into the log4j framework.
+                As discussed in the following sections, the solution can be deployed
+                in different ways, but the end-result always looks as shown in
+                <xref linkend="chainsaw4was-screenshot"/>.
+            </para>
+            <figure id="chainsaw4was-screenshot">
+                <title>Log events from a WAS instance displayed in Chainsaw</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="chainsaw4was-screenshot.png" format="PNG" scale="60" align="center"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+            <para>
+                Please note that this project is currently based on Chainsaw version 2.0alpha-1,
+                which is the last available release and has been built with log4j 1.3alpha-7.
+                The 1.3 branch has been discontinued<footnote><para>See <ulink url="http://logging.apache.org/log4j/"/>.</para></footnote>,
+                but many features originally developed for log4j 1.3 have been back-ported to log4j 1.2.
+                At the time of writing, work is in progress on Chainsaw 2.1, which will be based on
+                log4j 1.2.x. Chainsaw4WAS will be ported to that version of Chainsaw as soon as
+                an official release is available.
+            </para>
+        </section>
+    </chapter>
+</book>
