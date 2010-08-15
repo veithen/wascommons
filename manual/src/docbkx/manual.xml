@@ -93,5 +93,51 @@
                 an official release is available.
             </para>
         </section>
+        <section>
+            <title>Deployment options</title>
+            <para>
+                Chainsaw4WAS can be used with two deployment variants:
+            </para>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        Using the ZeroConf EAR. This requires deploying a special EAR file on each of the
+                        WAS instances to be monitored using Chainsaw. The code in this EAR file registers
+                        a notification listener on the local <classname>RasLoggingService</classname> and
+                        exposes the log events using a protocol supported out-of-the-box by Chainsaw.
+                        The component advertises itself using ZeroConf, so that it will be discovered
+                        automatically by Chainsaw. However, this only works if the workstation running
+                        Chainsaw is in the same network as the server.
+                    </para>
+                    <para>
+                        The advantage of this deployment option is its simplicity and the fact that
+                        it works with the standard Chainsaw distribution. However, it is only suitable
+                        for test and development environments, but not for production environments,
+                        especially not for large scale WebSphere ND installations.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Using the RAS logging receiver plugin in Chainsaw. When this option is used,
+                        no particular setup is necessary on the WAS instances, and Chainsaw connects
+                        remotely to one or more <classname>RasLoggingService</classname> instances
+                        using one of the supported JMX connectors.
+                        This deployment option requires a specially built Chainsaw distribution because the plugin
+                        depends on libraries from the WebSphere runtime. For legal reasons,
+                        these libraries cannot be redistributed, and the custom Chainsaw4WAS distribution
+                        is therefore not available for download. Instead, it must be built from source code,
+                        which requires a local WebSphere 7.0 installation.
+                    </para>
+                    <para>
+                        This option should be preferred for production environments. It is also more suitable
+                        for WAS ND installations, because only a connection to the deployment manager is
+                        required, but not to the individual application servers. Finally, this option
+                        should always be used in environments where ZeroConf
+                        doesn't work, i.e. if the application servers are located in a different network than the
+                        workstations running Chainsaw.
+                    </para>
+                </listitem>
+            </itemizedlist>
+        </section>
     </chapter>
 </book>
