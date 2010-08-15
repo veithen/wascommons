@@ -34,7 +34,7 @@
         </dependency>
         <dependency>
             <groupId>log4j</groupId>
-            <artifactId>log4j-optional</artifactId>
+            <artifactId>log4j-zeroconf</artifactId>
             <scope>runtime</scope>
         </dependency>
         <dependency>

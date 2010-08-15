@@ -38,5 +38,6 @@ public class InitServlet extends HttpServlet {
 
     @Override
     public void destroy() {
+        LogManager.getLoggerRepository().shutdown();
     }
 }
