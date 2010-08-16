@@ -93,7 +93,7 @@
                 an official release is available.
             </para>
         </section>
-        <section>
+        <section id="deployment-options">
             <title>Deployment options</title>
             <para>
                 Chainsaw4WAS can be used with two deployment variants:
@@ -138,6 +138,51 @@
                     </para>
                 </listitem>
             </itemizedlist>
+        </section>
+        <section>
+            <title>Installing and using the ZeroConf EAR</title>
+            <para>
+                To use the first deployment option described in
+                <xref linkend="deployment-options"/>, execute the following steps:
+            </para>
+            <procedure>
+                <step>
+                    <para>
+                        Download the ZeroConf EAR file from
+                        <ulink url="http://chainsaw4was.googlecode.com/files/was-log4j-zeroconf-&version;.ear"/>.
+                    </para>
+                </step>
+                <step>
+                    <para>
+                        Deploy the EAR to the WebSphere servers to be monitored using
+                        Chainsaw and start the application on these servers.
+                    </para>
+                </step>
+                <step>
+                    <para>
+                        Download the regular Chainsaw distribution from
+                        <ulink url="http://logging.apache.org/chainsaw/download.html"/>.
+                        Alternatively, start Chainsaw using Java Web start.
+                        After starting Chainsaw, the <guilabel>Zeroconf</guilabel> tab
+                        should list the discovered WebSphere servers, as shown in
+                        <xref linkend="chainsaw-zeroconf"/>.
+                    </para>
+                    <figure id="chainsaw-zeroconf">
+                        <title>WebSphere servers discovered by Chainsaw</title>
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata fileref="chainsaw-zeroconf.png" format="PNG" scale="60" align="center"/>
+                            </imageobject>
+                        </mediaobject>
+                    </figure>
+                </step>
+                <step>
+                    <para>
+                        Double click on the corresponding row in the <guilabel>Zeroconf</guilabel>
+                        tab to start receiving log events from a server.
+                    </para>
+                </step>
+            </procedure>
         </section>
     </chapter>
 </book>
