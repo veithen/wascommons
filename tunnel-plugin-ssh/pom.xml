@@ -24,8 +24,8 @@
         <version>0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <artifactId>ras-log4j-receiver</artifactId>
-    <name>Chainsaw for WAS :: log4j receiver</name>
+    <artifactId>tunnel-plugin-ssh</artifactId>
+    <name>Chainsaw for WAS :: Tunnel Plugin for SSH</name>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
@@ -38,8 +38,9 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.ibm</groupId>
-            <artifactId>com.ibm.ws.admin.core</artifactId>
+            <groupId>com.jcraft</groupId>
+            <artifactId>jsch</artifactId>
+            <version>0.1.42</version>
         </dependency>
     </dependencies>
 </project>
