@@ -16,6 +16,7 @@
 package com.googlecode.chainsaw4was.receiver;
 
 import java.net.InetSocketAddress;
+import java.net.URL;
 import java.util.Properties;
 
 import com.googlecode.chainsaw4was.tunnel.Tunnel;
@@ -120,6 +121,12 @@ public class RemoteRasLoggingReceiver extends RasLoggingReceiver implements Tunn
         ORBUtil.initGlobalORB();
         Properties clientProps = new Properties();
         clientProps.setProperty(AdminClient.CONNECTOR_TYPE, connectorType);
+        if (connectorType.equals(AdminClient.CONNECTOR_TYPE_SOAP)) {
+            URL url = RemoteRasLoggingReceiver.class.getClassLoader().getResource("soap.client.props");
+            if (url != null) {
+                clientProps.setProperty(AdminClient.CONNECTOR_SOAP_CONFIG, url.toExternalForm());
+            }
+        }
         clientProps.setProperty(AdminClient.CONNECTOR_SECURITY_ENABLED, Boolean.toString(securityEnabled));
         if (user != null) {
             clientProps.setProperty(AdminClient.USERNAME, user);
