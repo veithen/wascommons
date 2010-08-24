@@ -28,6 +28,7 @@ public class RemoteRasLoggingReceiver extends RasLoggingReceiver implements Tunn
     private final TunnelSupport tunnelSupport;
     private String host = "localhost";
     private int port = 9100;
+    private String connectorType = AdminClient.CONNECTOR_TYPE_RMI;
     private String tunnel;
     
     public RemoteRasLoggingReceiver() {
@@ -70,6 +71,14 @@ public class RemoteRasLoggingReceiver extends RasLoggingReceiver implements Tunn
         }
     }
 
+    public String getConnectorType() {
+        return connectorType;
+    }
+
+    public void setConnectorType(String connectorType) {
+        this.connectorType = connectorType;
+    }
+
     public String getTunnel() {
         return tunnel;
     }
@@ -82,7 +91,7 @@ public class RemoteRasLoggingReceiver extends RasLoggingReceiver implements Tunn
     protected Admin createAdmin() throws Exception {
         ORBUtil.initGlobalORB();
         Properties clientProps = new Properties();
-        clientProps.setProperty(AdminClient.CONNECTOR_TYPE, AdminClient.CONNECTOR_TYPE_RMI);
+        clientProps.setProperty(AdminClient.CONNECTOR_TYPE, connectorType);
         // TODO: need to close the tunnel somewhere
         Tunnel tunnel = tunnelSupport.createTunnel(host, port);
         if (tunnel == null) {
