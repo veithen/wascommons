@@ -30,6 +30,9 @@ public class RemoteRasLoggingReceiver extends RasLoggingReceiver implements Tunn
     private int port = 9100;
     private String connectorType = AdminClient.CONNECTOR_TYPE_RMI;
     private String tunnel;
+    private boolean securityEnabled;
+    private String user;
+    private String password;
     
     public RemoteRasLoggingReceiver() {
         tunnelSupport = new TunnelSupport(this);
@@ -87,11 +90,43 @@ public class RemoteRasLoggingReceiver extends RasLoggingReceiver implements Tunn
         this.tunnel = tunnel;
     }
 
+    public boolean isSecurityEnabled() {
+        return securityEnabled;
+    }
+
+    public void setSecurityEnabled(boolean securityEnabled) {
+        this.securityEnabled = securityEnabled;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     protected Admin createAdmin() throws Exception {
+        IBMSSLUtil.init();
         ORBUtil.initGlobalORB();
         Properties clientProps = new Properties();
         clientProps.setProperty(AdminClient.CONNECTOR_TYPE, connectorType);
+        clientProps.setProperty(AdminClient.CONNECTOR_SECURITY_ENABLED, Boolean.toString(securityEnabled));
+        if (user != null) {
+            clientProps.setProperty(AdminClient.USERNAME, user);
+        }
+        if (password != null) {
+            clientProps.setProperty(AdminClient.PASSWORD, password);
+        }
         // TODO: need to close the tunnel somewhere
         Tunnel tunnel = tunnelSupport.createTunnel(host, port);
         if (tunnel == null) {
