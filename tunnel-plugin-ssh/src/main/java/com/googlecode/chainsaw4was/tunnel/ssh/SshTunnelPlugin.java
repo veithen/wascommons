@@ -15,9 +15,6 @@
  */
 package com.googlecode.chainsaw4was.tunnel.ssh;
 
-import java.io.IOException;
-import java.net.ServerSocket;
-
 import org.apache.log4j.plugins.PluginSkeleton;
 
 import com.googlecode.chainsaw4was.tunnel.Tunnel;
@@ -70,6 +67,7 @@ public class SshTunnelPlugin extends PluginSkeleton implements TunnelPlugin {
         try {
             JSch jsch = new JSch();
             session = jsch.getSession(user, host, port);
+            session.setUserInfo(new InteractiveUserInfo());
             session.setPassword(password);
             session.connect();
         } catch (JSchException ex) {
@@ -82,19 +80,8 @@ public class SshTunnelPlugin extends PluginSkeleton implements TunnelPlugin {
     }
     
     public Tunnel createTunnel(String host, int port) throws TunnelException {
-        int lport;
-        try {
-            ServerSocket serverSocket = new ServerSocket(0);
-            lport = serverSocket.getLocalPort();
-            serverSocket.close();
-        } catch (IOException ex) {
-            throw new TunnelException("Unable to select ephemeral port number", ex);
-        }
-        try {
-            session.setPortForwardingL(lport, host, port);
-        } catch (JSchException ex) {
-            throw new TunnelException("Unable to set up port forwarding", ex);
-        }
-        return new SshTunnel(session, lport);
+        SshTunnel tunnel = new SshTunnel(session, host, port, getLogger());
+        new Thread(tunnel).start();
+        return tunnel;
     }
 }

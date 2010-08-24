@@ -89,7 +89,7 @@ public abstract class RasLoggingReceiver extends Receiver implements Notificatio
                 rasMBeans.add(rasMBean);
             }
         } catch (Throwable ex) {
-            log.error("Couldn't start " + RasLoggingReceiver.class.getName(), ex);
+            log.error("Couldn't start " + getClass().getName(), ex);
         }
     }
     

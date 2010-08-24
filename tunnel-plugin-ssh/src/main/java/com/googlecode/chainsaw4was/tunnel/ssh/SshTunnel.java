@@ -15,31 +15,74 @@
  */
 package com.googlecode.chainsaw4was.tunnel.ssh;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+import org.apache.log4j.ULogger;
 
 import com.googlecode.chainsaw4was.tunnel.Tunnel;
 import com.googlecode.chainsaw4was.tunnel.TunnelException;
-import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.ChannelDirectTCPIP;
 import com.jcraft.jsch.Session;
 
-public class SshTunnel implements Tunnel {
+public class SshTunnel implements Tunnel, Runnable {
     private final Session session;
-    private final int localPort;
+    private final String host;
+    private final int port;
+    private final ULogger log;
+    private final ServerSocket serverSocket;
 
-    public SshTunnel(Session session, int localPort) {
+    public SshTunnel(Session session, String host, int port, ULogger log) throws TunnelException {
         this.session = session;
-        this.localPort = localPort;
+        this.host = host;
+        this.port = port;
+        this.log = log;
+        try {
+            // TODO: specify bind address (localhost)
+            serverSocket = new ServerSocket(0);
+        } catch (IOException ex) {
+            throw new TunnelException("Unable to create server socket", ex);
+        }
     }
 
     public InetSocketAddress getSocketAddress() {
-        return new InetSocketAddress("localhost", localPort);
+        return new InetSocketAddress("localhost", serverSocket.getLocalPort());
     }
 
     public void close() throws TunnelException {
         try {
-            session.delPortForwardingL(localPort);
-        } catch (JSchException ex) {
-            throw new TunnelException("Unable to delete port forwarding", ex);
+            serverSocket.close();
+        } catch (IOException ex) {
+            throw new TunnelException("Error closing server socket", ex);
+        }
+    }
+
+    public void run() {
+        int lport = serverSocket.getLocalPort();
+        log.info("Created tunnel " + lport + " to " + host + ":" + port);
+        while (true) {
+            Socket socket;
+            try {
+                socket = serverSocket.accept();
+            } catch (IOException ex) {
+                return;
+            }
+            try {
+                socket.setTcpNoDelay(true);
+                ChannelDirectTCPIP channel = (ChannelDirectTCPIP)session.openChannel("direct-tcpip");
+                channel.setInputStream(socket.getInputStream());
+                channel.setOutputStream(socket.getOutputStream());
+                channel.setHost(host);
+                channel.setPort(port);
+                channel.setOrgIPAddress(socket.getInetAddress().getHostAddress());
+                channel.setOrgPort(socket.getPort());
+                channel.connect();
+                log.info("Established connection to " + host + ":" + port + " through tunnel " + lport);
+            } catch (Exception ex) {
+                log.error("Failed to establish connection to " + host + ":" + port + " through tunnel " + lport, ex);
+            }
         }
     }
 }
