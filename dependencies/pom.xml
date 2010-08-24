@@ -171,6 +171,28 @@
                             <pomFile>ibmjgssprovider.pom</pomFile>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>install-ibmkeycert</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <file>${was7.root}/java/jre/lib/ext/ibmkeycert.jar</file>
+                            <pomFile>ibmkeycert.pom</pomFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>install-ibmpkcs</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <file>${was7.root}/java/jre/lib/ibmpkcs.jar</file>
+                            <pomFile>ibmpkcs.pom</pomFile>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
         </plugins>
