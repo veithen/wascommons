@@ -18,13 +18,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.googlecode.chainsaw4was</groupId>
-    <artifactId>chainsaw4was</artifactId>
+    <groupId>com.googlecode.wascommons</groupId>
+    <artifactId>wascommons</artifactId>
     <version>0.1-SNAPSHOT</version>
-    <name>Chainsaw for WAS</name>
+    <name>WASCommons</name>
     <packaging>pom</packaging>
     
-    <url>http://code.google.com/p/chainsaw4was/</url>
+    <url>http://code.google.com/p/wascommons/</url>
     <inceptionYear>2010</inceptionYear>
     <licenses>
         <license>
@@ -46,12 +46,12 @@
     
     <issueManagement>
         <system>Google Code</system>
-        <url>http://code.google.com/p/chainsaw4was/issues/</url>
+        <url>http://code.google.com/p/wascommons/issues/</url>
     </issueManagement>
     <scm>
-        <url>http://code.google.com/p/chainsaw4was/source/browse/#svn/trunk/</url>
-        <connection>scm:svn:http://chainsaw4was.googlecode.com/svn/trunk</connection>
-        <developerConnection>scm:svn:https://chainsaw4was.googlecode.com/svn/trunk</developerConnection>
+        <url>http://code.google.com/p/wascommons/source/browse/#svn/trunk/</url>
+        <connection>scm:svn:http://wascommons.googlecode.com/svn/trunk</connection>
+        <developerConnection>scm:svn:https://wascommons.googlecode.com/svn/trunk</developerConnection>
     </scm>
     
     <modules>
@@ -104,9 +104,9 @@
     
     <repositories>
         <repository>
-            <id>chainsaw4was</id>
-            <name>chainsaw4was repository</name>
-            <url>http://chainsaw4was.googlecode.com/svn/repo</url>
+            <id>wascommons</id>
+            <name>wascommons repository</name>
+            <url>http://wascommons.googlecode.com/svn/repo</url>
             <releases>
                 <enabled>true</enabled>
                 <checksumPolicy>fail</checksumPolicy>
