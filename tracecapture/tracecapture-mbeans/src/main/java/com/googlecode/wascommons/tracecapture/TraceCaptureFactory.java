@@ -18,6 +18,10 @@ package com.googlecode.wascommons.tracecapture;
 import javax.management.JMException;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
+import javax.security.auth.Subject;
+
+import com.ibm.websphere.security.WSSecurityException;
+import com.ibm.websphere.security.auth.WSSubject;
 
 // TODO: need to keep track of created TraceCapture MBeans and destroy them when the application is stopped
 public class TraceCaptureFactory implements TraceCaptureFactoryMBean {
@@ -67,7 +71,14 @@ public class TraceCaptureFactory implements TraceCaptureFactoryMBean {
     public ObjectName createTraceCapture(String name) throws JMException {
         ObjectName objectName = MBeanUtil.formatObjectName(TraceCapture.class, name);
         
-        TraceCapture capture = new TraceCapture(this, name);
+        Subject callerSubject;
+        try {
+            callerSubject = WSSubject.getCallerSubject();
+        } catch (WSSecurityException ex) {
+            throw new JMException("Unable to get caller subject: " + ex.getMessage());
+        }
+        
+        TraceCapture capture = new TraceCapture(this, name, callerSubject);
         objectName = mbs.registerMBean(capture, objectName).getObjectName();
         capture.setObjectName(objectName);
         

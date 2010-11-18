@@ -15,6 +15,7 @@
  */
 package com.googlecode.wascommons.tracecapture;
 
+import java.security.PrivilegedExceptionAction;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
@@ -22,24 +23,28 @@ import javax.management.JMException;
 import javax.management.Notification;
 import javax.management.NotificationListener;
 import javax.management.ObjectName;
+import javax.security.auth.Subject;
 
 import com.ibm.ejs.ras.Tr;
 import com.ibm.ejs.ras.TraceComponent;
 import com.ibm.websphere.ras.RasMessage;
+import com.ibm.websphere.security.auth.WSSubject;
 
 public class TraceCapture implements TraceCaptureMBean, NotificationListener {
     private static final TraceComponent TC = Tr.register(TraceCapture.class, Constants.TRACE_GROUP, null);
     
     private final TraceCaptureFactory factory;
     private final String name;
+    private final Subject subject;
     private ObjectName objectName;
     private boolean enabled;
     private String category;
     private Pattern pattern;
     
-    public TraceCapture(TraceCaptureFactory factory, String name) {
+    public TraceCapture(TraceCaptureFactory factory, String name, Subject subject) {
         this.factory = factory;
         this.name = name;
+        this.subject = subject;
     }
 
     public void setObjectName(ObjectName objectName) {
@@ -95,13 +100,18 @@ public class TraceCapture implements TraceCaptureMBean, NotificationListener {
         if ((category == null || message.getMessageOriginator().equals(category))
                 && (pattern == null || pattern.matcher(message.getLocalizedMessage(Locale.getDefault())).matches())) {
             try {
-                String fileName = factory.getDumpFileNameSubstituted().replaceAll("%n", name).replaceAll("%t", String.valueOf(System.currentTimeMillis()));
-                factory.getMBeanServer().invoke(factory.getTraceService(), "dumpRingBuffer", new Object[] { fileName }, new String[] { "java.lang.String" });
-                if (TC.isInfoEnabled()) {
-                    Tr.info(TC, "Ring buffer dumped to file " + fileName);
-                }
-            } catch (JMException ex) {
-                Tr.error(TC, "Failed to dump ring buffer: " + ex.getMessage());
+                WSSubject.doAs(subject, new PrivilegedExceptionAction<Object>() {
+                    public Object run() throws Exception {
+                        String fileName = factory.getDumpFileNameSubstituted().replaceAll("%n", name).replaceAll("%t", String.valueOf(System.currentTimeMillis()));
+                        factory.getMBeanServer().invoke(factory.getTraceService(), "dumpRingBuffer", new Object[] { fileName }, new String[] { "java.lang.String" });
+                        if (TC.isInfoEnabled()) {
+                            Tr.info(TC, "Ring buffer dumped to file " + fileName);
+                        }
+                        return null;
+                    }
+                });
+            } catch (Throwable ex) {
+                Tr.error(TC, "Failed to dump ring buffer: " + ex.getClass().getName() + ": " + ex.getMessage());
             }
         }
     }
