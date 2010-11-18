@@ -36,7 +36,7 @@ public class MBeanUtil {
     }
     
     public static ObjectName findMBean(MBeanServer mbs, ObjectName queryName) throws JMException {
-        Iterator<ObjectName> it = mbs.queryMBeans(queryName, null).iterator();
+        Iterator<ObjectName> it = mbs.queryNames(queryName, null).iterator();
         if (it.hasNext()) {
             ObjectName name = it.next();
             if (it.hasNext()) {

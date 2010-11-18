@@ -20,4 +20,7 @@ import javax.management.ObjectName;
 
 public interface TraceCaptureFactoryMBean {
     ObjectName createTraceCapture(String name) throws JMException;
+    String getDumpFileName();
+    void setDumpFileName(String dumpFileName);
+    String getDumpFileNameSubstituted() throws JMException;
 }

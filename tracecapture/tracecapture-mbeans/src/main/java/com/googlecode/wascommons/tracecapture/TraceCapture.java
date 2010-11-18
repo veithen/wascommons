@@ -23,17 +23,23 @@ import javax.management.Notification;
 import javax.management.NotificationListener;
 import javax.management.ObjectName;
 
+import com.ibm.ejs.ras.Tr;
+import com.ibm.ejs.ras.TraceComponent;
 import com.ibm.websphere.ras.RasMessage;
 
 public class TraceCapture implements TraceCaptureMBean, NotificationListener {
+    private static final TraceComponent TC = Tr.register(TraceCapture.class, Constants.TRACE_GROUP, null);
+    
     private final TraceCaptureFactory factory;
+    private final String name;
     private ObjectName objectName;
     private boolean enabled;
     private String category;
     private Pattern pattern;
     
-    public TraceCapture(TraceCaptureFactory factory) {
+    public TraceCapture(TraceCaptureFactory factory, String name) {
         this.factory = factory;
+        this.name = name;
     }
 
     public void setObjectName(ObjectName objectName) {
@@ -88,7 +94,20 @@ public class TraceCapture implements TraceCaptureMBean, NotificationListener {
         RasMessage message = (RasMessage)notification.getUserData();
         if ((category == null || message.getMessageOriginator().equals(category))
                 && (pattern == null || pattern.matcher(message.getLocalizedMessage(Locale.getDefault())).matches())) {
-            
+            try {
+                String fileName = factory.getDumpFileNameSubstituted().replaceAll("%n", name).replaceAll("%t", String.valueOf(System.currentTimeMillis()));
+                factory.getMBeanServer().invoke(factory.getTraceService(), "dumpRingBuffer", new Object[] { fileName }, new String[] { "java.lang.String" });
+                if (TC.isInfoEnabled()) {
+                    Tr.info(TC, "Ring buffer dumped to file " + fileName);
+                }
+            } catch (JMException ex) {
+                Tr.error(TC, "Failed to dump ring buffer: " + ex.getMessage());
+            }
         }
+    }
+
+    public void destroy() throws JMException {
+        setEnabled(false);
+        factory.getMBeanServer().unregisterMBean(objectName);
     }
 }

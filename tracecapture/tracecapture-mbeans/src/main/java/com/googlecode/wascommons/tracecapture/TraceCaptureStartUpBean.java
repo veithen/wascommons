@@ -23,6 +23,7 @@ import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
 import javax.management.JMException;
 import javax.management.MBeanServer;
+import javax.management.ObjectName;
 
 import com.ibm.ejs.ras.Tr;
 import com.ibm.ejs.ras.TraceComponent;
@@ -33,6 +34,7 @@ public class TraceCaptureStartUpBean implements SessionBean {
     private static final TraceComponent TC = Tr.register(TraceCaptureStartUpBean.class, Constants.TRACE_GROUP, null);
     
     private MBeanServer mbs;
+    private ObjectName registeredObjectName;
     
     public void ejbCreate() throws CreateException {
     }
@@ -53,7 +55,7 @@ public class TraceCaptureStartUpBean implements SessionBean {
         Tr.entry(TC, "start");
         mbs = AdminServiceFactory.getMBeanFactory().getMBeanServer();
         try {
-            mbs.registerMBean(new TraceCaptureFactory(mbs), MBeanUtil.formatObjectName(TraceCaptureFactory.class, null));
+            registeredObjectName = mbs.registerMBean(new TraceCaptureFactory(mbs), MBeanUtil.formatObjectName(TraceCaptureFactory.class, null)).getObjectName();
             Tr.exit(TC, "start");
             return true;
         } catch (JMException ex) {
@@ -63,6 +65,12 @@ public class TraceCaptureStartUpBean implements SessionBean {
     }
     
     public void stop() {
-        
+        Tr.entry(TC, "stop");
+        try {
+            mbs.unregisterMBean(registeredObjectName);
+            Tr.exit(TC, "stop");
+        } catch (JMException ex) {
+            Tr.error(TC, "Failed to unregister MBean: " + ex.getMessage());
+        }
     }
 }

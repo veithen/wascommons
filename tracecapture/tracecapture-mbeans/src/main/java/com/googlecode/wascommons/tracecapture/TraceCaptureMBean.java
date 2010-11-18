@@ -20,4 +20,9 @@ import javax.management.JMException;
 public interface TraceCaptureMBean {
     boolean isEnabled();
     void setEnabled(boolean enabled) throws JMException;
+    String getCategory();
+    void setCategory(String category);
+    String getPattern();
+    void setPattern(String pattern);
+    void destroy() throws JMException;
 }
