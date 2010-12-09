@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.management.Notification;
+import javax.management.NotificationFilterSupport;
 import javax.management.NotificationListener;
 import javax.management.ObjectName;
 
@@ -75,15 +76,13 @@ public abstract class RasLoggingReceiver extends Receiver implements Notificatio
             admin = createAdmin();
             ObjectName queryMBean = new ObjectName("WebSphere:type=RasLoggingService,*");
             for (ObjectName rasMBean : admin.queryNames(queryMBean, null)) {
-                /*
                 NotificationFilterSupport filter = new NotificationFilterSupport();
-                filter.enableType(NotificationConstants.TYPE_RAS_FATAL);
-                filter.enableType(NotificationConstants.TYPE_RAS_ERROR);
-                filter.enableType(NotificationConstants.TYPE_RAS_WARNING);
-                filter.enableType(NotificationConstants.TYPE_RAS_INFO);
-                filter.enableType(NotificationConstants.TYPE_RAS_AUDIT);
-                filter.enableType(NotificationConstants.TYPE_RAS_SERVICE);*/
-                admin.addNotificationListener(rasMBean, this, null, rasMBean);
+                for (Map.Entry<String,Level> entry : rasTypeToLevelMap.entrySet()) {
+                    if (entry.getValue().isGreaterOrEqual(getThreshold())) {
+                        filter.enableType(entry.getKey());
+                    }
+                }
+                admin.addNotificationListener(rasMBean, this, filter, rasMBean);
                 updateInstanceCount(1);
                 log.info("Started listening to " + rasMBean);
                 rasMBeans.add(rasMBean);
