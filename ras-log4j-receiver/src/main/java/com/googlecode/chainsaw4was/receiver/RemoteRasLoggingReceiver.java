@@ -37,6 +37,7 @@ public class RemoteRasLoggingReceiver extends RasLoggingReceiver implements Tunn
     
     public RemoteRasLoggingReceiver() {
         tunnelSupport = new TunnelSupport(this);
+        setKeepAlive(60);
     }
 
     @Override

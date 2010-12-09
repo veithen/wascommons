@@ -18,8 +18,12 @@ package com.googlecode.chainsaw4was.receiver;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.management.Notification;
 import javax.management.NotificationFilterSupport;
@@ -54,15 +58,25 @@ public abstract class RasLoggingReceiver extends Receiver implements Notificatio
         localizedMessageField.setAccessible(true);
     }
     
+    private int keepAlive;
     private Admin admin;
+    private Timer timer;
     private final List<ObjectName> rasMBeans = new ArrayList<ObjectName>();
     private int instanceCount;
     
-    public int getInstanceCount() {
+    public int getKeepAlive() {
+        return keepAlive;
+    }
+
+    public void setKeepAlive(int keepAlive) {
+        this.keepAlive = keepAlive;
+    }
+
+    public synchronized int getInstanceCount() {
         return instanceCount;
     }
     
-    private void updateInstanceCount(int delta) {
+    private synchronized void updateInstanceCount(int delta) {
         int oldInstanceCount = instanceCount;
         instanceCount += delta;
         firePropertyChange("instanceCount", oldInstanceCount, instanceCount);
@@ -71,11 +85,35 @@ public abstract class RasLoggingReceiver extends Receiver implements Notificatio
     protected abstract Admin createAdmin() throws Exception;
     
     public void activateOptions() {
-        ULogger log = getLogger();
+        final ULogger log = getLogger();
         try {
             admin = createAdmin();
-            ObjectName queryMBean = new ObjectName("WebSphere:type=RasLoggingService,*");
-            for (ObjectName rasMBean : admin.queryNames(queryMBean, null)) {
+            if (keepAlive > 0) {
+                timer = new Timer("RasLoggingReceiver keep alive timer");
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        try {
+                            updateListeners();
+                        } catch (Exception ex) {
+                            log.error("Keep alive failed", ex);
+                        }
+                    }
+                }, 0, keepAlive*1000);
+            } else {
+                updateListeners();
+            }
+        } catch (Throwable ex) {
+            log.error("Couldn't start " + getClass().getName(), ex);
+        }
+    }
+    
+    private void updateListeners() throws Exception {
+        ULogger log = getLogger();
+        Set<ObjectName> unseenRasMBeans = new HashSet<ObjectName>(rasMBeans);
+        ObjectName queryMBean = new ObjectName("WebSphere:type=RasLoggingService,*");
+        for (ObjectName rasMBean : admin.queryNames(queryMBean, null)) {
+            if (!unseenRasMBeans.remove(rasMBean)) {
                 NotificationFilterSupport filter = new NotificationFilterSupport();
                 for (Map.Entry<String,Level> entry : rasTypeToLevelMap.entrySet()) {
                     if (entry.getValue().isGreaterOrEqual(getThreshold())) {
@@ -87,8 +125,13 @@ public abstract class RasLoggingReceiver extends Receiver implements Notificatio
                 log.info("Started listening to " + rasMBean);
                 rasMBeans.add(rasMBean);
             }
-        } catch (Throwable ex) {
-            log.error("Couldn't start " + getClass().getName(), ex);
+        }
+        for (ObjectName rasMBean : unseenRasMBeans) {
+            // No need to actually remove the notification listener because this would
+            // result in an InstanceNotFoundException anyway.
+            log.info(rasMBean + " disappeared.");
+            rasMBeans.remove(rasMBean);
+            updateInstanceCount(-1);
         }
     }
     
@@ -130,6 +173,9 @@ public abstract class RasLoggingReceiver extends Receiver implements Notificatio
     public void shutdown() {
         ULogger log = getLogger();
         for (ObjectName rasMBean : rasMBeans) {
+            if (timer != null) {
+                timer.cancel();
+            }
             try {
                 admin.removeNotificationListener(rasMBean, this);
                 updateInstanceCount(-1);
