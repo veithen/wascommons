@@ -19,6 +19,8 @@ import java.net.InetSocketAddress;
 import java.net.URL;
 import java.util.Properties;
 
+import org.apache.log4j.ULogger;
+
 import com.googlecode.chainsaw4was.tunnel.Tunnel;
 import com.googlecode.chainsaw4was.tunnel.TunnelSupport;
 import com.googlecode.chainsaw4was.tunnel.TunnelingEnabledPlugin;
@@ -118,6 +120,7 @@ public class RemoteRasLoggingReceiver extends RasLoggingReceiver implements Tunn
 
     @Override
     protected Admin createAdmin() throws Exception {
+        ULogger log = getLogger();
         IBMSSLUtil.init();
         ORBUtil.initGlobalORB();
         Properties clientProps = new Properties();
@@ -144,6 +147,9 @@ public class RemoteRasLoggingReceiver extends RasLoggingReceiver implements Tunn
             InetSocketAddress localAddress = tunnel.getSocketAddress();
             clientProps.setProperty(AdminClient.CONNECTOR_HOST, localAddress.getHostName());
             clientProps.setProperty(AdminClient.CONNECTOR_PORT, String.valueOf(localAddress.getPort()));
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("Creating admin client with properties: " + clientProps);
         }
         return new AdminClientWrapper(AdminClientFactory.createAdminClient(clientProps));
     }

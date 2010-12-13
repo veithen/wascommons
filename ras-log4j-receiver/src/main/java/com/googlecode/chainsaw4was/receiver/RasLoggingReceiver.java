@@ -89,6 +89,7 @@ public abstract class RasLoggingReceiver extends Receiver implements Notificatio
         try {
             admin = createAdmin();
             if (keepAlive > 0) {
+                log.debug("Creating keep-alive timer");
                 timer = new Timer("RasLoggingReceiver keep alive timer");
                 timer.schedule(new TimerTask() {
                     @Override
@@ -110,6 +111,7 @@ public abstract class RasLoggingReceiver extends Receiver implements Notificatio
     
     private void updateListeners() throws Exception {
         ULogger log = getLogger();
+        log.debug("Starting to update RasLoggingService notification listeners");
         Set<ObjectName> unseenRasMBeans = new HashSet<ObjectName>(rasMBeans);
         ObjectName queryMBean = new ObjectName("WebSphere:type=RasLoggingService,*");
         for (ObjectName rasMBean : admin.queryNames(queryMBean, null)) {
