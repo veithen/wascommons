@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.googlecode.chainsaw4was.tunnel.ssh;
+package com.googlecode.wascommons.log4j.tunnel.ssh;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -22,8 +22,8 @@ import java.net.Socket;
 
 import org.apache.log4j.ULogger;
 
-import com.googlecode.chainsaw4was.tunnel.Tunnel;
-import com.googlecode.chainsaw4was.tunnel.TunnelException;
+import com.googlecode.wascommons.log4j.tunnel.Tunnel;
+import com.googlecode.wascommons.log4j.tunnel.TunnelException;
 import com.jcraft.jsch.ChannelDirectTCPIP;
 import com.jcraft.jsch.Session;
 

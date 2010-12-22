@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.googlecode.chainsaw4was.tunnel.ssh;
+package com.googlecode.wascommons.log4j.tunnel.ssh;
 
 import org.apache.log4j.plugins.PluginSkeleton;
 
-import com.googlecode.chainsaw4was.tunnel.Tunnel;
-import com.googlecode.chainsaw4was.tunnel.TunnelException;
-import com.googlecode.chainsaw4was.tunnel.TunnelPlugin;
+import com.googlecode.wascommons.log4j.tunnel.Tunnel;
+import com.googlecode.wascommons.log4j.tunnel.TunnelException;
+import com.googlecode.wascommons.log4j.tunnel.TunnelPlugin;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;

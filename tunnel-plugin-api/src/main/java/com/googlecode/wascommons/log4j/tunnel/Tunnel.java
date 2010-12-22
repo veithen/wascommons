@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.googlecode.chainsaw4was.receiver;
+package com.googlecode.wascommons.log4j.tunnel;
 
-public class AdminException extends RuntimeException {
-    private static final long serialVersionUID = 8509416313202542582L;
+import java.net.InetSocketAddress;
 
-    public AdminException(Throwable cause) {
-        super(cause);
-    }
+public interface Tunnel {
+    InetSocketAddress getSocketAddress();
+    void close() throws TunnelException;
 }

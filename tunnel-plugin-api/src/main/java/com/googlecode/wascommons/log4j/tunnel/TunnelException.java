@@ -13,10 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.googlecode.chainsaw4was.tunnel;
+package com.googlecode.wascommons.log4j.tunnel;
 
-import org.apache.log4j.plugins.Plugin;
+public class TunnelException extends Exception {
+    private static final long serialVersionUID = -796708782934415883L;
 
-public interface TunnelPlugin extends Plugin {
-    Tunnel createTunnel(String host, int port) throws TunnelException;
+    public TunnelException(String msg, Throwable cause) {
+        super(msg, cause);
+    }
+
+    public TunnelException(String msg) {
+        super(msg);
+    }
 }

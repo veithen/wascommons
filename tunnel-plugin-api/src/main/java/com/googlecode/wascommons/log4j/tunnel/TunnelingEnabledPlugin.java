@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.googlecode.chainsaw4was.tunnel;
+package com.googlecode.wascommons.log4j.tunnel;
 
-import java.net.InetSocketAddress;
+import org.apache.log4j.plugins.Plugin;
 
-public interface Tunnel {
-    InetSocketAddress getSocketAddress();
-    void close() throws TunnelException;
+public interface TunnelingEnabledPlugin extends Plugin {
+    String getTunnel();
 }

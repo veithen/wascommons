@@ -25,7 +25,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>tunnel-plugin-api</artifactId>
-    <name>Chainsaw for WAS :: Tunnel Plugin API</name>
+    <name>WASCommons :: Tunnel Plugin API</name>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>

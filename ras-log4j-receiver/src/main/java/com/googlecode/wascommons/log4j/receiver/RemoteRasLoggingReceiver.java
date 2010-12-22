@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.googlecode.chainsaw4was.receiver;
+package com.googlecode.wascommons.log4j.receiver;
 
 import java.net.InetSocketAddress;
 import java.net.URL;
@@ -21,9 +21,9 @@ import java.util.Properties;
 
 import org.apache.log4j.ULogger;
 
-import com.googlecode.chainsaw4was.tunnel.Tunnel;
-import com.googlecode.chainsaw4was.tunnel.TunnelSupport;
-import com.googlecode.chainsaw4was.tunnel.TunnelingEnabledPlugin;
+import com.googlecode.wascommons.log4j.tunnel.Tunnel;
+import com.googlecode.wascommons.log4j.tunnel.TunnelSupport;
+import com.googlecode.wascommons.log4j.tunnel.TunnelingEnabledPlugin;
 import com.ibm.websphere.management.AdminClient;
 import com.ibm.websphere.management.AdminClientFactory;
 

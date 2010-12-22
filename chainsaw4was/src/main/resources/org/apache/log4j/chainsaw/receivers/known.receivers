@@ -1,1 +1,1 @@
-com.googlecode.chainsaw4was.receiver.RemoteRasLoggingReceiver
+com.googlecode.wascommons.log4j.receiver.RemoteRasLoggingReceiver

@@ -13,13 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.googlecode.chainsaw4was.receiver;
+package com.googlecode.wascommons.log4j.tunnel;
 
-import com.ibm.websphere.management.AdminServiceFactory;
+import org.apache.log4j.plugins.Plugin;
 
-public class LocalRasLoggingReceiver extends RasLoggingReceiver {
-    @Override
-    protected Admin createAdmin() throws Exception {
-        return new AdminServiceWrapper(AdminServiceFactory.getAdminService());
-    }
+public interface TunnelPlugin extends Plugin {
+    Tunnel createTunnel(String host, int port) throws TunnelException;
 }
