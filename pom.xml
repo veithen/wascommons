@@ -55,6 +55,8 @@
     </scm>
     
     <modules>
+        <module>chainsaw4was</module>
+        <module>manual</module>
         <module>ras-log4j-receiver</module>
         <module>tunnel-plugin-api</module>
         <module>tunnel-plugin-ssh</module>
