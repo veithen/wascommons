@@ -45,7 +45,7 @@
         <section>
             <title>Introduction</title>
             <para>
-                The aim of the Chainsaw4WAS is to integrate Apache Chainsaw with
+                Chainsaw4WAS is a subproject of WASCommons that integrates Apache Chainsaw with
                 WebSphere Application Server.
                 <ulink url="http://logging.apache.org/chainsaw/">Apache Chainsaw</ulink>
                 is a GUI-based log viewer based on the popular log4j framework. It ships
@@ -67,7 +67,7 @@
                 allow these log events to be visualized in Apache Chainsaw.
             </para>
             <para>
-                The heard of the Chainsaw4WAS project is a custom log4j plugin
+                The heart of the Chainsaw4WAS distribution is a custom log4j plugin
                 (more precisely an implementation of the <classname>org.apache.log4j.plugins.Receiver</classname>
                 interface) that connects to a local or remote <classname>RasLoggingService</classname> and
                 that injects the received log events into the log4j framework.
@@ -96,7 +96,7 @@
         <section id="deployment-options">
             <title>Deployment options</title>
             <para>
-                Chainsaw4WAS can be used with two deployment variants:
+                Chainsaw4WAS can be used with three deployment variants:
             </para>
             <itemizedlist>
                 <listitem>
@@ -107,7 +107,8 @@
                         exposes the log events using a protocol supported out-of-the-box by Chainsaw.
                         The component advertises itself using ZeroConf, so that it will be discovered
                         automatically by Chainsaw. However, this only works if the workstation running
-                        Chainsaw is in the same network as the server.
+                        Chainsaw is in the same network as the server (and if your friendly network
+                        administrator didn't set up ACLs to forbid multicast).
                     </para>
                     <para>
                         The advantage of this deployment option is its simplicity and the fact that
@@ -131,10 +132,16 @@
                     <para>
                         This option should be preferred for production environments. It is also more suitable
                         for WAS ND installations, because only a connection to the deployment manager is
-                        required, but not to the individual application servers. Finally, this option
-                        should always be used in environments where ZeroConf
-                        doesn't work, i.e. if the application servers are located in a different network than the
-                        workstations running Chainsaw.
+                        required, but not to the individual application servers.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Using the LogHub. In this scenario, a standard Chainsaw distribution is used to
+                        connect to the LogHub (typically using a <classname>SocketHubReceiver</classname> or
+                        ZeroConf), which in turn connects to a set of WAS instances using the
+                        RAS logging receiver plugin. This option is suitable for use cases where many people
+                        may need to monitor the same set of WebSphere servers.
                     </para>
                 </listitem>
             </itemizedlist>
@@ -149,7 +156,7 @@
                 <step>
                     <para>
                         Download the ZeroConf EAR file from
-                        <ulink url="http://chainsaw4was.googlecode.com/files/was-log4j-zeroconf-&version;.ear"/>.
+                        <ulink url="http://wascommons.googlecode.com/files/was-log4j-zeroconf-&version;.ear"/>.
                     </para>
                 </step>
                 <step>
