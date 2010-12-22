@@ -25,7 +25,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>ras-log4j-receiver</artifactId>
-    <name>Chainsaw for WAS :: log4j receiver</name>
+    <name>WASCommons :: log4j receiver</name>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>

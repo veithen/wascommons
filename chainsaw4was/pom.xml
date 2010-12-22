@@ -19,13 +19,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.googlecode.chainsaw4was</groupId>
-        <artifactId>chainsaw4was</artifactId>
+        <groupId>com.googlecode.wascommons</groupId>
+        <artifactId>wascommons</artifactId>
         <version>0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <artifactId>distribution</artifactId>
-    <name>Chainsaw for WAS :: Distribution</name>
+    <artifactId>chainsaw4was</artifactId>
+    <name>WASCommons :: Chainsaw Distribution</name>
     <packaging>pom</packaging>
     <dependencies>
         <dependency>
