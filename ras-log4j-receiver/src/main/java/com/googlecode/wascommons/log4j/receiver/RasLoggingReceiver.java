@@ -116,10 +116,16 @@ public abstract class RasLoggingReceiver extends Receiver implements Notificatio
         ObjectName queryMBean = new ObjectName("WebSphere:type=RasLoggingService,*");
         for (ObjectName rasMBean : admin.queryNames(queryMBean, null)) {
             if (!unseenRasMBeans.remove(rasMBean)) {
-                NotificationFilterSupport filter = new NotificationFilterSupport();
-                for (Map.Entry<String,Level> entry : rasTypeToLevelMap.entrySet()) {
-                    if (entry.getValue().isGreaterOrEqual(getThreshold())) {
-                        filter.enableType(entry.getKey());
+                NotificationFilterSupport filter;
+                Level threshold = getThreshold();
+                if (threshold == null) {
+                    filter = null;
+                } else {
+                    filter = new NotificationFilterSupport();
+                    for (Map.Entry<String,Level> entry : rasTypeToLevelMap.entrySet()) {
+                        if (entry.getValue().isGreaterOrEqual(getThreshold())) {
+                            filter.enableType(entry.getKey());
+                        }
                     }
                 }
                 admin.addNotificationListener(rasMBean, this, filter, rasMBean);
