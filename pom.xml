@@ -106,9 +106,8 @@
     
     <repositories>
         <repository>
-            <id>wascommons</id>
-            <name>wascommons repository</name>
-            <url>http://wascommons.googlecode.com/svn/repo</url>
+            <id>github-veithen-releases</id>
+            <url>https://raw.githubusercontent.com/veithen/mvn-repo/master/releases/</url>
             <releases>
                 <enabled>true</enabled>
                 <checksumPolicy>fail</checksumPolicy>
